@@ -1,0 +1,631 @@
+# Internet_Systems_Programming-Lab-04
+CPSC307 ISP AU2025 Build		JCH 080525
+
+Autor site:  https://mkrause.info/
+Code assets: https://www.usemodernfullstack.dev/downloads
+
+080525 Ch01 on node
+080625 Ch02 on javascript
+080725 Ch03 on typescript
+080825 Ch04 on react
+081125 Ch05 on next.js
+081225 Ch06 on REST and GraphQL
+081325 Redo Ch05/06; do W3Schools React
+081425 Ch07 on Mongo - fail
+081525 Planning based on Zybooks
+081825 nextjs units on React, dashboard app	
+
+From WSL2
+*********
+
+See instructions elsewhere to install WSL2 and VS Code
+
+mkdir cpsc307
+cd cpsc307
+node -v -> sudo apt install nodejs  	// v18.19.1
+npm -v	-> sudp apt install npm 	// 9.2.0
+
+npm ls will reveal version numbers for your configs!
+
+*******************
+Krause Ch01 node.js
+*******************
+
+Note that I will refer the extracted content as "the repo"
+From https://www.usemodernfullstack.dev/downloads download anywhere
+Move zip to /usr/home/cpsc307 folder via Explorer
+Use Explorer to extract all
+For each chapter, have Explorer open to this folder on Ubuntu
+
+// prep
+mkdir sample-express			// ok for Ch01-02 ONLY
+cd sample-express			// *******************
+npm init				// accept ALL defaults
+ls
+more package.json
+npm install express			// omit version, as per book
+more package.json			// observe ^5.1.0
+// omit karma !
+npm audit
+// omit npm audit fix
+npm prune				// benign
+npm update				// benign
+npx jsonlint package.json		
+
+// Ex 01: Build "Hello World" Express.js server
+// Krause-cycle: copy-paste Listing 1-5 into index.js
+// BEST: launch vs code (code .) from working directory, create, copy
+// Or, use nano, or do all from within Explorer
+
+node index.js
+http://localhost:3000/hello
+Ctrl-C 					// MUST terminate/kill server
+
+// end of ch01
+
+*****************************
+Krause Ch02 Modern Javascript
+*****************************
+
+From Explorer, rename the sample-express folder to ch01
+Now, copy ch01; rename the copy ch02
+From the CLI, navigate to ch02, and launch, test, and kill server
+
+// Ex02
+
+npm install node-fetch			// in ch02
+npm ls					// my version is 3.3.2
+
+// edit/overwrite package.json and index.js and add route.js
+// ERROR: text says routes.js here but code says route.js - will change in Ch03
+
+// suggested approach is VSC and alt is CLI with nano
+// OK to save-as prior versions as .old etc.
+
+code .					// 
+
+// use CLI or open terminal in VSC to launch server
+
+node index.js				// appears on 3000, if Ex01 terminated!
+http://localhost:3000/api/names 
+http://localhost:3000/hello
+Ctrl-c	
+
+// end of Ch02
+ 
+**********************
+Krause Ch03 Typescript
+**********************
+
+// Exercise 3:Extend Express.js with TypeScript
+
+Now, copy the ch02 folder and rename the copy to be ch03.
+Open your explorer to the Krause repo
+
+Navigate to ./cpsc307 for this
+npm install --save-dev typescript	
+npm ls					// version typescript@5.9.2
+
+Navigate to ./cpsc307/ch03
+code .
+npm install --save-dev @types/express	// pkg.json says t/e ^5.0.3
+npm ls					// validate
+
+// create tsconfig.json
+npx tsc -init				// def goes here, not in parent folder
+
+//  added all this to END OF tsconfig.json -- note trailing comma!
+
+    // JCH 080725
+        "esModuleInterop": true,
+        "module": "es6",
+        "moduleResolution": "node",
+        "target": "es6",
+        "noImplicitAny": true,
+
+// create index.d.ts as a new file via VSC, contents from Listing 3-19, save
+
+// create routes.ts with contents from Listing 3-20, save
+// (if you rename routes.js to routes.ts, you will see errors)	
+
+// create index.ts with contents from Listing 3-21
+
+// JCH addendum: in tsconfig.json, set "VerbatimModuleSyntax": false
+
+npm tsc 				// generates error but completes
+node index.js				
+http://localhost:3000/api/weather/12345 
+
+// attempts to default the const in server.get did not satisfy tsc
+
+// end of ch03
+
+**********
+Ch04 React
+**********
+
+Exercise 4: Create a Reactive User Interface for the Express.js Server
+
+Now, copy the ch03 folder and rename the copy to be ch04.
+Open your explorer to the Krause repo
+Work in the Ch04 folder
+There, create a folder called public; cd public
+
+Create weather.html from Listing 4-7 inside public (Use Explorer or VSC)
+
+Modify index.ts to align with Listing 4-8, meaning copy it from the repo
+
+npx tsc					// inherits compiler errors from Ch03
+node index.js
+http://localhost:3000/components/weather == book says weather-component, error
+// also ok to test against hello, api/names, api/weather
+Ctrl-C to exit
+
+************	smohn@smohn-Blade-15-Base-Model-Early-2020-RZ09-0328:~/Desktop/FALL25/CPSC-307/bk/ch05/my-app$ npm run dev
+Ch05 next.js
+************
+
+FB notes that create-next-app is deprecated
+
+A. Much of the relevant tasking appears before the actual Exercise 5
+B. We have paper books so we can refer to page numbers and make margin notes
+C. We will work in ./ch05 rather than sample-next
+D. Alternate content - to study, maybe to build, is in Apendix B
+E. Setup with two Ubuntu tabs, the first in .\ch05, the second in Krause repo
+
+mkdir ch05
+cd ch05
+npx create-next-app@latest --typescript --use-npm	// default name is my-app
+
+// 
+cd my-app
+npm run dev				// I tend to start/stop, work in one tab
+http://localhost:3000
+
+// leave server running, do the editing from Tab 2 CLI
+mkdir pages				// actually not built by npx
+cd pages
+
+// p72 nested page routes: the hello endpoint
+// create hello.tsx from Listing 5-1 	// I used VSC from ./pages
+// browse to http://localhost:3000/hello
+
+// p73 nested page routes aka components
+mkdir components			// in pages
+// create weather.tsx from Listing 5-2	// I used VSC from ./components
+http://localhost:3000/components/weather
+
+// p75 API routes
+cd ..
+pwd					// should be in ./pages
+mkdir api
+cd api
+// create names.ts from Listing 5-3
+npm run dev
+http://localhost:3000/api/names
+
+// p77 dynamic URLs
+mkdir weather				// in ./pages/api
+cd weather
+// create [zipcode].ts from Listing 5-4
+browse to http://localhost:3000/api/weather/44281
+
+// p78 Styling: "read only," no action required
+
+// p80 Builtin next.js component: "read only," no action required
+
+// See in Listing 5-8 how metadata tags were added
+// See in Listing 5-9 how client-side link pre-fetch is done
+
+// p83 commences Pre-rendering and Publishing
+// Three methods: SSG, SSR, ISR - book instructs each
+
+// navigate to ./my-app and confirm with pwd
+mkdir utils
+cd utils
+// create fetch-names.ts from Listing 5-11
+// Now let's implement SSR
+cd ..					// now in ./my-app
+cd pages
+// create names-ssr.tsx from Listing 5-12
+http://localhost:3000/names-ssr (slow!)
+// omit SSG and ISR builds - but yes, let's do Client-Side
+// we are still in ./pages
+// create names-csr.tsx from Listing 5-15
+http://localhost:3000/names-csr (fast!)
+Ctrl-C
+
+// for assessment purposes, I consider this complete
+
+// Ex05 Refactor Express.hs and React to Next.js
+
+cd ./ch05				// aka sample-next
+npx create-next-app@latest --typescript --use-npm	// name refactored-app
+cd refactored-app					// *******************
+// create custom.d.ts from Listing 5-16
+mkdir pages
+cd pages
+mkdir api
+cd api
+// create names.ts from Listing 5-3
+// create [zipcode].ts from Listing 5-4
+cd ..					// back in ./pages
+// create hello.tsx from Listing 5-9	// TYPO in book!
+mkdir components
+cd components
+// create weather.tsx from Listing 5.2
+
+// test suite
+npm run dev				
+http://localhost:3000/hello
+http://localhost:3000/api/names
+http://localhost:3000/api/weather/96826
+http://localhost:3000/components/weather
+
+************************
+Ch06 REST & GraphQL APIs
+************************
+
+- Emphasis is on REST API and JSON;  Exercise 6 is GraphQL
+- Assumes presence of curl, which may require apt-get install
+- May test curl with curl GET statement under "Reading Data"
+
+// Exercise 6 - builds upon Ch05 work product
+// navigate to ./cpsc307
+cp -r ch05 ch06
+cd ch06
+cd my-app				// same place as package.json
+npm install @apollo/server @as-integrations/next graphql graphql-tag
+npm ls
+mkdir graphql
+cd graphql
+// create schema.ts from Listing 6.2	// in ./pages/graphql
+// add this line at the beginning of the file:
+import gql from "graphql-tag";
+
+// create data's.ts from Listing 6-6	// in ./pages/graphql
+// create resolvers.ts from Listing 6-7
+
+// navigate to ./my-app/pages/api
+// create graphql.ts from Listing 6-8
+
+npm run dev				// in my-app
+http://localhost:3000/api/graphql 
+// test with "zip": "96826" in Hawaii
+// requires setup of Operatin and Variables exactly per book!
+
+// End of Ch06
+
+*********************
+Ch07 Mongodb/Mongoose
+*********************
+
+cd ~
+cd cpsc307
+cp -r ch06 ch07
+cd ch07
+npm install mongodb-memory-server mongoose
+npm ls
+mkdir middleware
+mkdir mongoose
+cd mongoose
+mkdir weather
+cd weather
+code .
+// create interface.ts from Listing 7-1
+// create schema.ts from Listing 7-2
+// create model.ts from Listing 7-3
+
+// still in weather -- set up CRUD functions - getting ahead in book!
+// create services.ts from Listing 7-5	
+// append Listing 7-6 content to services.ts
+// append Listing 7-7 content to services.ts
+// append Listing 7-8 content to services.ts
+// close VSC
+
+cd ..
+cd ..
+ls
+cd middleware	
+code .			
+// create  db-connect.ts from Listing 7-4 // ok to skip this
+// replace db-connect.ts from Listing 7-10
+// close VSC
+
+// navigate to ~/cpsc307/ch07/my-app/pages/api
+// book says replace pages/api/v1/weather/[zipcode].ts with Listing 7-9
+// Plan A: cd to weather and do replacement
+// Plan B: mkdir v1 and mkdir weather then create [zipcode].ts there
+// I did both Plans -> Plan B prevails
+
+// navigate to ./cpsc307/ch07/middleware
+// replace db-connects.ts with Listing 7-10
+
+npm run dev			//	
+http://localhost:3000/api/v1/weather/96815
+
+// Exercise 7 formally begins
+
+// replace api/graphql.ts with Listing 7-11
+
+// cd ~/cpsc307/ch07/my-app/graphql
+// replace resolvers.ts with Listing 7-12
+
+Test suite
+http://localhost:3000/api/graphql
+Ctrl-C
+
+// the Graphql part fails, other routes OK
+// underlying cause is db connect fail
+// runtime syntax error - not related to pathing
+
+// end of ch07 
+
+*****************************
+Segue into React, Third Party
+*****************************
+
+The meta-plan is https://nextjs.org/learn in four parts
+1. React Foundations (10 units)
+2. App Router (16) aka Dashboard App
+3. Pages Router (46)
+4. SEO (33) 
+
+See also: https://www.w3schools.com for (a) javascript and (b) react
+
+Sandboxes
+1. https://stackblitz.com/edit/javascript?file=index.js
+2. https://reactplayground.vercel.app/
+3. https://codesandbox.io/p/sandbox/react-new
+4. TBD: Babel (VSC extension; 3 script lines in app)
+
+In VSC
+https://marketplace.visualstudio.com/items?itemName=antfu.vite
+
+REST APIs
+1. openweathermap.org, API key is 9d4ea942a061bb87efd5f00ba8d094e0
+2. https://github.com/public-apis/public-apis
+
+Requires a GitHub account (your UAnet @uakron.edu identity)
+Create account at nextjs.org
+
+// Commencing Course 0 on React from W3Schools
+cd ~
+cd cpsc307
+mkdir w3s
+cd w3s
+npm uninstall -g create-react-app
+npx create-react-app my-react-app
+cd my-react-app
+npm start
+// open a second Ubuntu tab and navigate to ./my-react-app/src
+// use VSC to replace the <div className .... stuff as directed, then save, observe
+mv index.js index.js.old
+// create index.js from Hello React! content, then save, observe
+
+The rest of the tutorial transcends functions to classes with methods in full.
+Language also supports vars/constants, arrays and conditionals. 
+Note critical imports of React and ReactDOM 
+Note use of Root rather than main, plus modules are OK.
+
+Classes can be enhanced to be Components, ideally exported as .js files
+Arguments/Parameters are now Properties/props in HTML syntax
+
+**********************************
+// Commencing Course 1 on React //
+**********************************
+
+The following two sites are suitable for running course examples
+https://codesandbox.io/p/sandbox/react-new
+https://reactplayground.vercel.app/
+
+
+********************************************
+Segue into W3S Mongo, instead of Krause Ch07
+********************************************
+
+https://www.w3schools.com/mongodb/index.php
+Built on Mongo Atlas server -$0 account via https://www.mongodb.com/cloud/atlas/register
+
+May rely on mongodb-mongosh client
+https://www.bytebase.com/reference/mongodb/how-to/how-to-install-mongodb-shell-on-mac-ubuntu-centos-windows/
+
+*******************
+Long March to React
+*******************
+next.js Foundations
+******************* 
+
+Informed much by https://react.dev/learn from FB
+
+Vite is a "build too" for node projects
+OR build/test on https://stackblitz.com/edit/javascript?file=index.js
+
+Problem: extant Node is too old to run Vite
+
+Install nvm per this site: 
+https://nodesource.com/blog/Update-Node.js-versions-on-linux
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash source ~/.bashrc # or ~/.zshrc
+// installs 0.39.5
+nvm install --lts
+// installs v22.18.0
+
+npm install -D vite
+npm create vite@latest
+// called mine vproj, chose typescript
+cd vproj
+npm install
+npm run dev
+http://localhost:5173/
+
+// nextjs.org Foundations
+// working in ~/cpsc307/learn/foundations
+
+// code .  to launch VSC which is unmodified
+// for Ch09, copy and verify the original index.html; save as index.html.old
+npm install react@latest react-dom@latest next@latest 
+// create an index.js from model;  no need to edit manually
+// from CLI in ./foundations
+mkdir app
+cp index.js ./app
+cd app
+cp index.js page.js
+// edit page.js to prepend work export to function  HomePage()
+// exit VSC
+cd ..
+code . 
+// edit package.json to add lines for next dev per model
+npm run dev				// inside VSC
+http://localhost:3000			// renders error as expected
+
+// edit like-button.js as directed
+// save page.js as page.js.old
+// create page.js as directed
+npm run dev				// inside VSC
+http://localhost:3000			// success!
+
+*********************
+next.js Dashboard App
+********************* 
+
+// annotation as needed; no annotation for Ch01-02-03 BUT do every step
+
+cd ~/learn
+npm install -g pnpm
+pnpm i 
+npx create-next-app@latest nextjs-dashboard --example "https://github.com/vercel/next-learn/tree/main/dashboard/starter-example" --use-pnpm
+
+cd nextjs-dashboard
+pnpm run dev
+http://localhost:3000
+// leave server running;  open a new CLI tab
+
+// ch04
+// root is nextjs-dashboard
+cd app
+mkdir dashboard
+cd dashboard
+// create its page.tsx from model
+
+mkdir customers
+mkdir invoices
+// in each, create its pages.tsx from instructions
+// browse to each 
+// create layout.tsx from instructions
+// browse to root
+
+http://localhost:3000/
+http://localhost:3000/dashboard
+
+// end Ch05 Success!
+
+// commence Ch06
+
+// will involve postgres instance on vercel.com (acct reqd)
+// will involve GitHub.com acct associated with UA identity
+// on GitHub, under Settings | Developer, generate and save a general PAT token (check repo)
+
+// file for later consideration: gh repo create
+
+// Use the Unix CLI mostly - the desktop app doesn't see WSL2 -- VSC could?
+
+cd ~/cpsc307/learn/nextjs-dashboard
+git config --global user.email "me@uakron.edu"
+git config --global user.name "my name"
+git init				
+git add .					
+git commit -m "Initial 081925"
+
+// on GitHub.com, create a new repo: mine is dash; NO readme or .gitignore
+
+git remote add origin https://github.com/UAhoagjc/dashboard.git
+git branch -M main
+git push -u origin main
+// will prompt for Username and PW (use PAT token instead of PW)
+
+// deploy on Vercel as directed (slow)
+// storage | database | Neon | IAD1 | no auth
+
+// replace text with Neon QuickStart as directed
+
+pnpm run dev
+http://localhost:3000/
+http://localhost:3000/seed
+
+// to test the SQL SELECT, uncomment routes.ts per notes
+// AND turn off the first Response.json "remove line" per notes
+// suggest changing = 666 part to > 0
+http://localhost:3000/query
+
+// more mods for the revenue chart...
+http://localhost:3000/dashboard
+
+// wrapping up with Ch08 here
+
+// read but skipped Ch09-10 which improve speed
+
+********************************
+Docker example "Rumpl" -  Part 1
+********************************
+
+Prereqs:
+Download install Windows Docker Desktop, update as needed - assumes WSL2
+Create Docker account; sign in 
+
+https://www.docker.com/blog/how-to-setup-your-local-node-js-development-environment-using-docker/
+https://docs.docker.com/guides/nodejs/  		// ref only
+cd ~/cpsc307
+mkdir dckr
+cd dckr
+mkdir rumpl
+cd rumpl
+
+// Step 1
+code .
+// from inside VSC terminal:
+git clone https://github.com/rumpl/memphis.git
+// note that ./notes-service/Dockerfile was provided
+
+// Step 2 - runs but completes in Step 3
+// from CLI
+cd Memphis
+cd notes-service
+docker buildx build -t notes-service .		// dot mandatory
+
+docker run --rm -p 8081:8081 --name notes notes-service
+
+// Step 3 - wow, runs a containerized MondoDB
+cd .. 					
+pwd						// memphis
+docker volume create mongodb
+docker volume create mongodb_config
+docker network create mongodb
+
+docker run -it --rm -d -v mongodb:/data/db -v mongodb_config:/data/configdb -p 27017:27017 --network mongodb --name mongodb mongo
+
+// Step 4
+
+// one command
+docker run \
+-it --rm -d \
+--network mongodb \
+--name notes \
+-p 8081:8081 \
+-e SERVER_PORT=8081 \
+-e SERVER_PORT=8081 \
+-e DATABASE_CONNECTIONSTRING=mongodb://mongodb:27017/yoda_notes \
+notes-service
+
+// Step 5 - test using curl
+
+curl --request POST \
+--url http://localhost:8081/services/m/notes \
+  --header 'content-type: application/json' \
+  --data '{
+"name": "this is a note",
+"text": "this is a note that I wanted to take while I was working on writing a blog post.",
+"owner": "peter"
+}'
+
+http://localhost:8081/ 				// 404 response
+// Validation: from DockerDesktop, view {containers, images} for {notes, mongodb} and builds!
